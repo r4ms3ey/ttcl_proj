@@ -1,0 +1,150 @@
+.download-btn {
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 10px 5px 0;
+    width: auto;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 15px;
+}
+.download-btn i {
+    margin-right: 5px;
+}
+.download-btn:hover {
+    background-color: #1557b0;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #fff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #1a73e8;
+    display: flex;
+    align-items: center;
+}
+
+.header-left h1 i {
+    margin-right: 8px;
+}
+
+.header-left p {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: black;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+
+}
+
+.user-info span {
+    margin: 0 10px;
+    color: black;
+}
+
+.logout {
+    color: black;
+    text-decoration: none;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.logout i {
+    margin-right: 5px;
+}
+
+.logout:hover {
+    background-color: #b71c1c;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 250px;
+}
+
+.card h2 {
+    color: black;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.card h2 i {
+    margin-right: 8px;
+}
+
+.card p {
+    color: #666;
+    margin: 10px 0;
+}
+
+.card button {
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 0;
+    width: auto;
+    text-align: center;
+    display: inline-block;
+}
+
+.card button i {
+    margin-right: 5px;
+}
+
+.card button:hover {
+    background-color: #1557b0;
+}
+
+.status-text {
+    color: #d32f2f;
+    margin-left: 10px;
+}
