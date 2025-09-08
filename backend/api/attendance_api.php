@@ -17,13 +17,24 @@ switch ($action) {
     case 'checkin':
         $input = json_decode(file_get_contents('php://input'), true);
         $userId = $input['user_id'] ?? null;
+        $lat = $input['latitude'] ?? null;
+        $lng = $input['longitude'] ?? null;
         if (!$userId) {
             echo json_encode(['success' => false, 'message' => 'Missing user ID']);
             exit;
         }
-    $result = Attendance::checkIn($userId, 'checkin');
-    echo json_encode($result);
-    exit;
+        if ($lat === null || $lng === null) {
+            echo json_encode(['success' => false, 'message' => 'Missing latitude or longitude']);
+            exit;
+        }
+        require_once __DIR__ . '/../services/LocationService.php';
+        if (!LocationService::isWithinAllowedLocation(floatval($lat), floatval($lng), 100)) {
+            echo json_encode(['success' => false, 'message' => 'Check-in denied. You are not at the allowed location.']);
+            exit;
+        }
+        $result = Attendance::checkIn($userId, 'checkin');
+        echo json_encode($result);
+        exit;
     case 'checkout':
         $input = json_decode(file_get_contents('php://input'), true);
         $userId = $input['user_id'] ?? null;

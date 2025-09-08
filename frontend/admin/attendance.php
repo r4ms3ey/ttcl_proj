@@ -45,47 +45,47 @@ $attendanceRecords = Attendance::getAll($search, $department, $date);
             <button type="button" class="btn" id="setLocationBtn"><i class="fas fa-map-marker-alt"></i> Set Location</button>
         </div>
     </div>
-</section>
 
-<script src="export_pdf.js"></script>
 
-<!-- Modal for setting location (not nested in any div) -->
-<div id="locationModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:30px 20px;border-radius:8px;max-width:350px;margin:auto;position:relative;">
-        <h3>Set Attendance Location</h3>
-        <form id="locationForm">
-            <label>Latitude:<br><input type="number" step="any" id="latitude" required></label><br><br>
-            <label>Longitude:<br><input type="number" step="any" id="longitude" required></label><br><br>
-            <button type="button" id="getCurrentLocBtn">Use My Location</button>
-            <button type="submit" class="btn">Save Location</button>
-            <button type="button" id="closeLocationModal" style="float:right;">Cancel</button>
-        </form>
+    <script src="export_pdf.js"></script>
+
+    <!-- Modal for setting location (not nested in any div) -->
+    <div id="locationModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:30px 20px;border-radius:8px;max-width:350px;margin:auto;position:relative;">
+            <h3>Set Attendance Location</h3>
+            <form id="locationForm">
+                <label>Latitude:<br><input type="number" step="any" id="latitude" required></label><br><br>
+                <label>Longitude:<br><input type="number" step="any" id="longitude" required></label><br><br>
+                <button type="button" id="getCurrentLocBtn">Use My Location</button>
+                <button type="submit" class="btn">Save Location</button>
+                <button type="button" id="closeLocationModal" style="float:right;">Cancel</button>
+            </form>
+        </div>
     </div>
-</div>
 
-    <div class="table">
-        <table>
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id="select-all"></th>
-                    <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Department</th>
-                    <th>Date</th>
-                    <th>Group</th>
-                    <th>Check-In</th>
-                    <th>Check-Out</th>
-                    <th>Total Hours</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="attendance-table-body">
-                <!-- Rows injected dynamically -->
-            </tbody>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all"></th>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>Group</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Total Hours</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>help 
+                <tbody id="attendance-table-body">
+                    <!-- Rows injected dynamically -->
+                </tbody>
 
-        </table>
-    </div>
+            </table>
+        </div>
 </section>
 
 <script>

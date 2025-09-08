@@ -34,7 +34,7 @@ if ($user && ($user['password'] === 'ttcl123' || $user['password'] === 't@t1234'
         window.DEPARTMENT_ID = <?php echo json_encode($profile['department_id']); ?>;
     </script>
 </head>
-<body>
+<body style="background: linear-gradient(90deg, #000 0%, #1a73e8 100%);">
     <div class="dashboard">
         <header>
             <div class="header-left">

@@ -20,7 +20,7 @@
 }
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f7fa;
+    background: linear-gradient(90deg, #000 0%, #1a73e8 100%);
     margin: 0;
     padding: 0;
 }

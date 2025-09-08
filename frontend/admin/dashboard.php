@@ -88,9 +88,9 @@ $pendingDocs = $conn->query("
                     }
     </style>
 </head>
-<body style="background: linear-gradient(135deg, #3d98ffff 0%, #ffed50ff 100%);">
+<body style="background: linear-gradient(90deg, #000 0%, #1a73e8 100%);">
     <!-- Header -->
-    <header>
+    <header style="color: #ffffff; background: rgba(0, 0, 0, 1);">
         <div class="header-left">
             <span class="clock-icon"><i class="fas fa-clock"></i></span>
             <div class="title-section">
