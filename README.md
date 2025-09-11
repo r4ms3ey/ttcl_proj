@@ -129,6 +129,59 @@ ttcl_proj/
 - **Login fails**: Check password is hashed in DB using `password_hash`.
 - **Check-in blocked**: Group might not be scheduled today or not assigned.
 
+
+## 🧩 Code-Level Architecture & Flow
+
+### Backend Structure
+
+- **API Endpoints (`backend/api/`)**: Each PHP file exposes RESTful endpoints for a specific resource (attendance, documents, announcements, departments, field workers). Endpoints accept GET/POST requests and return JSON responses.
+   - Example: `attendance_api.php?action=checkIn` (POST) expects `{ user_id, latitude, longitude }` and returns `{ success, error }`.
+
+- **Controllers (`backend/controllers/`)**: Handle business logic and validation. They call model methods and services, process input, and return results.
+   - `AttendanceController.php`: Manages check-in/check-out, validates group schedule, location/IP, and updates attendance records.
+   - `AuthController.php`: Handles login/logout, session management, redirects based on user role.
+   - `FieldWorkerController.php`: Manages profile completion, password changes, document uploads, worker CRUD operations.
+
+- **Models (`backend/models/`)**: Represent database tables and provide static methods for CRUD operations.
+   - Example: `Attendance.php` has methods like `checkIn($userId)`, `hasCheckedInToday($userId)`, `getAll($search, $department, $date)`.
+   - `User.php`, `FieldWorker.php`, `Document.php`, etc. encapsulate DB logic for their respective entities.
+
+- **Services (`backend/services/`)**: Encapsulate reusable logic.
+   - `GroupService.php`: Checks if a worker’s group is scheduled for today.
+   - `LocationService.php`: Validates IP/location for check-in/out.
+   - `UploadService.php`: Handles file uploads and validation.
+
+### Frontend Structure
+
+- **Admin Panel (`frontend/admin/`)**: PHP pages for dashboard, attendance, workers, departments, documents, announcements. Use JavaScript to call backend APIs via AJAX/fetch.
+   - Example: `attendance.php` loads records by calling `attendance_api.php?action=list` and displays them in a table.
+   - `dashboard.js` fetches stats and updates UI widgets.
+
+- **Field Worker Panel (`frontend/field_worker/`)**: Dashboard, attendance, profile, documents. JS files handle check-in/out, profile completion, document upload.
+   - Example: `attendance.js` uses browser geolocation, sends check-in/out requests to backend, and handles responses.
+
+### Example Flow: Field Worker Check-In
+
+1. Field worker clicks "Check-In" in the frontend (`attendance.js`).
+2. JS gets geolocation, sends POST to `/backend/api/attendance_api.php?action=checkIn` with user ID, latitude, longitude.
+3. `AttendanceController::checkIn()` validates group schedule, checks if already checked in, validates IP/location.
+4. If valid, `Attendance::checkIn($userId)` creates a new attendance record in DB.
+5. Response `{ success: true }` is returned to frontend, which updates UI.
+
+### Example: Document Upload
+
+1. Field worker selects a file and document type in frontend.
+2. JS sends POST with file to `/backend/api/document_api.php?action=upload`.
+3. `FieldWorkerController::uploadDocument()` validates and saves file, updates DB status.
+4. Response indicates success/failure.
+
+### Error Handling
+
+- Backend returns `{ success: false, error: "..." }` for failed operations.
+- Frontend displays error messages and disables UI actions as needed.
+
+---
+
 ## 📫 Contact
 
 For issues, email `isaacshaban54@gmail.com` or open an issue in the repo.
