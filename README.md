@@ -26,12 +26,8 @@ ttcl_proj/
 │   │   ├── fieldworker_password_api.php
 │   │   └── fieldworker_profile_api.php
 │   ├── controllers/
-│   │   ├── AdminController.php
 │   │   ├── AttendanceController.php
-│   │   ├── AuthController.php
-│   │   ├── DepartmentController.php
-│   │   ├── DocumentController.php
-│   │   └── FieldWorkerController.php
+│   │   └──AuthController.php
 │   ├── middlewares/
 │   │   └── AuthMiddleware.php
 │   ├── models/
@@ -79,12 +75,6 @@ ttcl_proj/
 │       ├── profile.js
 │       ├── status.js
 │       └── style.css
-├── assets/
-│   ├── css/
-│   │   ├── admin.css
-│   │   └── style.css
-│   ├── images/
-│   └── js/
 ├── index.php
 ├── login.php
 ├── logout.php
