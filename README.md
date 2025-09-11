@@ -28,8 +28,6 @@ ttcl_proj/
 │   ├── controllers/
 │   │   ├── AttendanceController.php
 │   │   └──AuthController.php
-│   ├── middlewares/
-│   │   └── AuthMiddleware.php
 │   ├── models/
 │   │   ├── AdminDocument.php
 │   │   ├── Announcement.php
