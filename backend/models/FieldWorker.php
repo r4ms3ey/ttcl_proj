@@ -1,16 +1,19 @@
+
 <?php
+// FieldWorker model: handles all field worker-related DB operations
 require_once __DIR__ . '/../../config/Database.php';
 
 class FieldWorker
 {
-    // 1. Save profile after first login
+    // Save profile after first login
     public static function saveProfile($userId, $data) {
         $db = Database::getConnection();
-        $stmt = $db->prepare("
-            INSERT INTO field_worker_profiles 
+        $stmt = $db->prepare(
+            "INSERT INTO field_worker_profiles 
             (user_id, full_name, phone, department_id, college, start_date, end_date, email, group_name)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        // Insert profile data into DB
         return $stmt->execute([
             $userId,
             $data['full_name'],
@@ -24,14 +27,15 @@ class FieldWorker
         ]);
     }
 
-    // 2. Update profile (after initial setup)
+    // Update profile after initial setup
     public static function updateProfile($userId, $data) {
         $db = Database::getConnection();
-        $stmt = $db->prepare("
-            UPDATE field_worker_profiles
+        $stmt = $db->prepare(
+            "UPDATE field_worker_profiles
             SET full_name = ?, phone = ?, department_id = ?, college = ?, start_date = ?, end_date = ?, email = ?, group_name = ?
-            WHERE user_id = ?
-        ");
+            WHERE user_id = ?"
+        );
+        // Update profile data in DB
         return $stmt->execute([
             $data['full_name'],
             $data['phone'],
@@ -45,72 +49,74 @@ class FieldWorker
         ]);
     }
 
-    // 3. Change password (used by controller)
+    // Change password for field worker
     public static function updatePassword($userId, $newHash) {
         $db = Database::getConnection();
         $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
-        return $stmt->execute([$newHash, $userId]);
+        return $stmt->execute([$newHash, $userId]); // Update password in DB
     }
 
-    // 4. Get profile details (used to display dashboard)
+    // Get profile details for dashboard display
     public static function getProfile($userId) {
         $db = Database::getConnection();
-        $stmt = $db->prepare("
-            SELECT f.*, d.name AS department_name
+        $stmt = $db->prepare(
+            "SELECT f.*, d.name AS department_name
             FROM field_worker_profiles f
             JOIN departments d ON f.department_id = d.id
-            WHERE f.user_id = ?
-        ");
+            WHERE f.user_id = ?"
+        );
         $stmt->execute([$userId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Return profile or null
     }
 
-    // 5. Get group name only (for group logic)
+    // Get group name for group logic
     public static function getGroup($userId) {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT group_name FROM field_worker_profiles WHERE user_id = ?");
         $stmt->execute([$userId]);
-        return $stmt->fetchColumn();
+        return $stmt->fetchColumn(); // Return group name
     }
 
-    // 6. Handle document upload (certificate or registration)
+    // Handle document upload (certificate or registration)
     public static function handleUpload($userId, $file, $type) {
         $db = Database::getConnection();
 
-        $filename = $file['name'];
-        $path = '../uploads/documents/' . $filename;
+        $filename = $file['name']; // Get uploaded file name
+        $path = '../uploads/documents/' . $filename; // Destination path
 
+        // Move uploaded file to destination
         if (!move_uploaded_file($file['tmp_name'], $path)) {
             return ['error' => 'File upload failed.'];
         }
 
-        $stmt = $db->prepare("
-            INSERT INTO documents (user_id, type, file_name, uploaded_at, status)
+        // Insert or update document record in DB
+        $stmt = $db->prepare(
+            "INSERT INTO documents (user_id, type, file_name, uploaded_at, status)
             VALUES (?, ?, ?, NOW(), 'uploaded')
             ON DUPLICATE KEY UPDATE
                 file_name = VALUES(file_name),
                 uploaded_at = NOW(),
-                status = 'uploaded'
-        ");
+                status = 'uploaded'"
+        );
 
-        return $stmt->execute([$userId, $type, $filename]);
+        return $stmt->execute([$userId, $type, $filename]); // Return true on success
     }
 
- // Get all workers
+    // Get all field workers (admin use)
     public static function getAllWorkers() {
         $db = Database::getConnection();
-        $stmt = $db->query("
-            SELECT u.id as user_id, u.username, u.role, f.*, d.name AS department_name
+        $stmt = $db->query(
+            "SELECT u.id as user_id, u.username, u.role, f.*, d.name AS department_name
             FROM users u
             LEFT JOIN field_worker_profiles f ON u.id = f.user_id
             LEFT JOIN departments d ON f.department_id = d.id
             WHERE u.role = 'field_worker'
-            ORDER BY u.id DESC
-        ");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            ORDER BY u.id DESC"
+        );
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return all workers
     }
 
-    // Search workers
+    // Search field workers by search string
     public static function searchWorkers($search) {
         $db = Database::getConnection();
         $query = "
@@ -124,16 +130,16 @@ class FieldWorker
         $stmt = $db->prepare($query);
         $like = "%$search%";
         $stmt->execute([$like, $like, $like, $like]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return matching workers
     }
 
-    // Delete worker
+    // Delete field worker by user ID
     public static function deleteById($userId) {
         $db = Database::getConnection();
         $stmt = $db->prepare("DELETE FROM field_worker_profiles WHERE user_id = ?");
-        $stmt->execute([$userId]);
+        $stmt->execute([$userId]); // Delete profile
         $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
-        return $stmt->execute([$userId]);
+        return $stmt->execute([$userId]); // Delete user
     }
 }
 
